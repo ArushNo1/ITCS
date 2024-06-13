@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class ConwayMap {
 	private long[] rows;
@@ -13,6 +14,14 @@ public class ConwayMap {
 	
 	public int getSize() {
 		return size;
+	}
+	
+	public void setSize(int s) {
+		if(s > rows.length) {
+			long[] r2 = Arrays.copyOf(rows, s);
+			rows = r2;
+		}
+		size = s;
 	}
 	
 	public int getXWidth() {

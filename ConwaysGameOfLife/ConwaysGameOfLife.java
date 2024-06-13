@@ -12,12 +12,14 @@ import java.util.*;
 
 @SuppressWarnings("serial")
 
-public class ConwaysGameOfLife extends JPanel implements ChangeListener {
+public class ConwaysGameOfLife extends JPanel {
 	@SuppressWarnings("unused")
 
 	private Random rand = new Random();
 	private static final int WIDTH = 600;
-	private static final int HEIGHT = 800;
+	private static final int HEIGHT = 700;
+	static Color bg = new Color(50, 50, 50);
+
 
 	private BufferedImage image;
 	@SuppressWarnings("unused")
@@ -27,6 +29,7 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 	private JSlider delaySlider;
 	private Dial delayDial;
 	private JButton start;
+	private JSlider sizeSlider;
 
 	private ConwayMap grid;
 	private ArrayList<Integer> born;
@@ -36,16 +39,41 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 		image =  new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 		
+		g.setColor(bg);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		grid = new ConwayMap(16);
 		grid.draw(g, 0, 0, WIDTH, 600);
 		
-		delaySlider = new JSlider(0, 500, 0/*250*/);
-		delaySlider.addChangeListener(this);		
 		setLayout(null);
+		delaySlider = new JSlider(0, 500, 250);
+		delaySlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				timer.setDelay(delaySlider.getMaximum() - delaySlider.getValue() + 50);
+				delayDial.setValue(delaySlider.getValue());
+				delayDial.draw(g, bg);
+				repaint();
+			}
+		});		
 		delaySlider.setBounds(25, 625, 100, 25);
 		add(delaySlider);
 		delayDial = new Dial(75, 658, 50, 0, 500, false);
-		
+				
+		sizeSlider = new JSlider(4, 64, 16);
+		sizeSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int value = sizeSlider.getValue();
+				grid.setSize(value);
+				g.setColor(bg);
+				g.fillRect(0, 0, WIDTH, HEIGHT);
+				delayDial.draw(g, bg);
+				grid.draw(g, 0, 0, WIDTH, 600);
+				repaint();
+			}
+		});
+		sizeSlider.setBounds(425, 625, 100, 25);
+		add(delaySlider);
 		
 		start = new JButton("Start");
 		start.setBounds(225,575,125,25);
@@ -67,15 +95,14 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 		updateGameRules("B3S23");
 		//System.out.print(born);
 		//System.out.println(survive);
-		
-		
+				
 		timer = new Timer(100, new TimerListener());
-		stateChanged(null);
-		addMouseListener(new MouseListener() {
+		delaySlider.getChangeListeners()[0].stateChanged(null);
+		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//System.out.println(e.getX() + ", " + e.getY());
-				if(!timer.isRunning()) {
+				System.out.println(e.getX() + ", " + e.getY());
+				if(!timer.isRunning() && e.getY() <= 580) {
 					//int x = (int) Math.round((double) e.getX() / grid.getXWidth());
 					int x = e.getX() / grid.getXWidth();
 					//int y = (int) Math.round((double) e.getY() / grid.getYWidth());
@@ -87,22 +114,19 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub	
+				
 			}
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
+				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
+				
 			}
 		});
-		
-
 	}
 
 	public void updateGameRules(String rules) {
@@ -128,6 +152,10 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			g.setColor(bg);
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			delayDial.draw(g, bg);
+			
 			ConwayMap nextIter = new ConwayMap(grid.getSize());
 			for (int r = 0; r < grid.getSize(); r++) {
 				for (int c = 0; c < grid.getSize(); c++) {
@@ -143,7 +171,6 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 						//boolean x = born.contains(n);
 						//System.out.print(x? "v " : "x ");
 						nextIter.write(r, c, born.contains(n));
-						
 					}
 				}
 				//System.out.println();
@@ -160,7 +187,6 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 	}
-
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Conways Game of Life");
 		frame.setSize(WIDTH, HEIGHT);
@@ -168,14 +194,6 @@ public class ConwaysGameOfLife extends JPanel implements ChangeListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new ConwaysGameOfLife());
 		frame.setVisible(true);
-	}
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		timer.setDelay(delaySlider.getMaximum() - delaySlider.getValue() + 50);
-		delayDial.setValue(delaySlider.getValue());
-		delayDial.draw(g, Color.white);
-		repaint();
 	}
 
 }
