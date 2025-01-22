@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -11,8 +10,8 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Falcon9Liftoff extends JPanel {
 
-	private static final int WIDTH = 800;
-	private static final int HEIGHT = 600;
+	private static final int PANEL_WIDTH = 1200;
+	private static final int PANEL_HEIGHT = 600;
 
 	// required global variables
 	private BufferedImage image;
@@ -25,13 +24,13 @@ public class Falcon9Liftoff extends JPanel {
 
 	public Falcon9Liftoff() {
 		// set up Buffered Image and Graphics objects
-		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(PANEL_WIDTH, PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 		g2D = (Graphics2D) g;
 
-		rocket = new Falcon9(WIDTH / 2, (HEIGHT)*29/32-25, 50, 10);
+		rocket = new Falcon9(PANEL_WIDTH / 2, (PANEL_HEIGHT)*29/32-25, 50, 10);
 		rocket.setDeltaTime(.1);
-		rocket.groundHeight = HEIGHT*3/32;
+		rocket.groundHeight = PANEL_HEIGHT*3/32;
 
 		// set up and start the Timer
 		timer = new Timer(10, new TimerListener());
@@ -48,9 +47,9 @@ public class Falcon9Liftoff extends JPanel {
 			Color textColor = Color.white;
 			String textContent = "Hello";
 			g2D.setPaint(skyGradient);
-			g2D.fillRect(0, 0, WIDTH, HEIGHT);
+			g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 			g.setColor(new Color(35,105,39).brighter());
-			g.fillOval(WIDTH*-1/6, HEIGHT*29/32, WIDTH*4/3, HEIGHT*2/8);
+			g.fillOval(PANEL_WIDTH*-1/6, PANEL_HEIGHT*29/32, PANEL_WIDTH*4/3, PANEL_HEIGHT*2/8);
 			g.setColor(new Color(50,50,50));
 
 			if (time >= 0 && time <= 559) rocket.move(HEIGHT, time);
@@ -138,8 +137,8 @@ public class Falcon9Liftoff extends JPanel {
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Animation Shell");
-		frame.setSize(WIDTH, HEIGHT);
-		frame.setLocation(0, 0);
+		frame.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+		frame.setLocation(0, 100);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Falcon9Liftoff()); 
 		frame.setVisible(true);
