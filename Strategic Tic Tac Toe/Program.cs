@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -41,7 +41,6 @@ class Program {
     fillSquares();
     drawBoard();
     fTurn();
-    
   }
   static bool isEmpty(int a){
     return !(Osquares.Contains(a) || Xsquares.Contains(a) || Dsquares.Contains(a) || Xspots.Contains(a) || Ospots.Contains(a));
@@ -63,11 +62,11 @@ class Program {
       ConsoleColor color;
       String text;
       if(Ospots.Contains(i)){
-        text = " ◯ ";
+        text = " O ";
       }else if(Xspots.Contains(i)){
-        text = " ╳ ";
+        text = " X ";
       }else{
-        text = " ☐ ";
+        text = " _ ";
       }
 
       if(Xsquares.Contains(i)){
@@ -103,34 +102,34 @@ class Program {
       /*
       if(Ospots.Contains(i)){
         if(Xsquares.Contains(i)){
-          color(" ◯ " , ConsoleColor.DarkBlue);
+          color(" O " , ConsoleColor.DarkBlue);
         } else if (Dsquares.Contains(i)){
-          color(" ◯ " , ConsoleColor.DarkMagenta);
+          color(" O " , ConsoleColor.DarkMagenta);
         } else {
-          color(" ◯ " , ConsoleColor.DarkRed);
+          color(" O " , ConsoleColor.DarkRed);
         }
              
       } else if(Xspots.Contains(i)){
         if(Osquares.Contains(i)){
-          color(" ╳ " , ConsoleColor.DarkRed);
+          color(" X " , ConsoleColor.DarkRed);
         } else if (Dsquares.Contains(i)){
-          color(" ╳ " , ConsoleColor.DarkMagenta);
+          color(" X " , ConsoleColor.DarkMagenta);
         } else {
-          color(" ╳ " , ConsoleColor.DarkBlue);
+          color(" X " , ConsoleColor.DarkBlue);
         }
         
       } else {
         if(Xsquares.Contains(i)){
-          color(" ☐ ", ConsoleColor.DarkBlue);
+          color(" _ ", ConsoleColor.DarkBlue);
         } else if(Osquares.Contains(i)){
-          color(" ☐ ", ConsoleColor.DarkRed);
+          color(" _j ", ConsoleColor.DarkRed);
         } else if(Dsquares.Contains(i)){
-          color(" ☐ ", ConsoleColor.DarkMagenta);  
+          color(" _j ", ConsoleColor.DarkMagenta);  
         
         } else if(Cspots.Contains(i)){
-          color(" ☐ ", ConsoleColor.DarkGreen);  
+          color(" _j ", ConsoleColor.DarkGreen);  
         }else{
-          color(" ☐ ",ConsoleColor.Gray);
+          color(" _j ",ConsoleColor.Gray);
         }
         if( Ospots.Contains(i) || Xspots.Contains(i) ){
           Cspots[Cspots.IndexOf(i)] = 999;
